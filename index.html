@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clean Title Wave Portfolio</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --p3-accent: #000000;          
+            --p3-menu-bg: rgba(0, 0, 0, 0.85); 
+            --p3-text-light: #ffffff;      
+            --p3-white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace; 
+            text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.15);
+        }
+
+        .menu-item span, .footer-hint, .menu-item::before, .content-box {
+            font-family: 'Courier New', Courier, monospace !important;
+        }
+
+        body {
+            background-color: #e5e5e5;
+            color: var(--p3-accent);
+            overflow: hidden;
+            height: 100vh;
+            background-image: url('images/nen.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .overlay-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .school-logo {
+            position: absolute;
+            left: -5%;            
+            top: 50%;
+            width: 75vh;          
+            height: 75vh;
+            object-fit: cover;    
+            object-position: center top; 
+            border-radius: 50%;   
+            pointer-events: none; 
+            mix-blend-mode: difference;
+            filter: grayscale(100%) brightness(0.9) contrast(1.2);
+            z-index: 1;
+            animation: logo-float 8s ease-in-out infinite;
+        }
+
+        @keyframes logo-float {
+            0% { transform: translateY(-50%) rotate(-8deg) scale(1); opacity: 0.28; }
+            50% { transform: translateY(-53%) rotate(-6deg) scale(1.02); opacity: 0.38; }
+            100% { transform: translateY(-50%) rotate(-8deg) scale(1); opacity: 0.28; }
+        }
+
+        .header-title-text {
+            position: absolute;
+            top: 5%;
+            right: 5%;
+            z-index: 3;
+            animation: title-float 4s ease-in-out infinite;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .header-title-text.hidden {
+            opacity: 0;
+            transform: translateY(-20px);
+            pointer-events: none;
+        }
+
+        .header-title-text h1 {
+            font-family: 'Special Elite', system-ui, -apple-system, sans-serif !important; 
+            font-weight: 900;
+            font-size: 3.8rem; 
+            color: var(--p3-accent);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            white-space: nowrap;
+        }
+
+        @keyframes title-float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(-0.5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .right-layout {
+            position: absolute;
+            top: 50%;                 
+            transform: translateY(-50%); 
+            right: 2%; 
+            width: 360px;             
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; 
+            z-index: 2; 
+        }
+
+        .menu-wrapper {
+            width: 100%;
+        }
+
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            gap: 18px; 
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .menu-container.hidden {
+            opacity: 0;
+            transform: scale(0.95) translateX(100px); 
+            pointer-events: none;
+            position: absolute;
+            width: 100%;
+        }
+
+        .menu-item, .footer-hint, .content-box {
+            position: relative;
+            background: var(--p3-menu-bg);
+            border-radius: 6px; 
+            filter: url(#wave-filter);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            animation: orbital-wave 6s ease-in-out infinite;
+            transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s, opacity 0.4s ease;
+        }
+
+        .menu-item {
+            width: 100%;
+            padding: 20px 35px; 
+            text-align: right;
+            cursor: pointer;
+        }
+
+        .menu-container .menu-item:nth-child(1) { animation-delay: 0s; }
+        .menu-container .menu-item:nth-child(2) { animation-delay: 0.4s; }
+        .menu-container .menu-item:nth-child(3) { animation-delay: 0.8s; }
+        .menu-container .menu-item:nth-child(4) { animation-delay: 1.2s; }
+        .menu-container .menu-item:nth-child(5) { animation-delay: 1.6s; }
+        .menu-container .menu-item:nth-child(6) { animation-delay: 2s; }
+
+        .menu-item span {
+            font-weight: bold;
+            font-size: 1.35rem;       
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--p3-text-light);
+            display: block;
+        }
+
+        .menu-item:hover {
+            animation-play-state: paused; 
+            background: rgba(255, 255, 255, 0.98);
+            border-color: rgba(0, 0, 0, 0.8);
+            transform: translateX(-12px) scale(1.02) !important;
+            box-shadow: -5px 5px 25px rgba(255, 255, 255, 0.8), 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-item:hover span {
+            color: var(--p3-accent);
+            text-shadow: none;
+        }
+
+        .menu-item::before {
+            content: attr(data-num);
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: bold;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .menu-item:hover::before {
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-back {
+            background: rgba(45, 45, 45, 0.9) !important;
+        }
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.98) !important;
+        }
+        .btn-back:hover span {
+            color: #333333 !important;
+        }
+
+        @keyframes orbital-wave {
+            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+            25% { transform: translateX(4px) translateY(-2px) rotate(0.3deg); }
+            50% { transform: translateX(0px) translateY(-4px) rotate(0deg); }
+            75% { transform: translateX(-4px) translateY(-2px) rotate(-0.3deg); }
+            100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+        }
+
+        .footer-hint {
+            position: absolute;
+            bottom: 5%;
+            left: 5%;
+            font-weight: bold;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: var(--p3-text-light);
+            padding: 15px 30px;
+            text-transform: uppercase;
+            z-index: 3;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none; 
+            animation-delay: 0.5s;
+        }
+
+        .footer-hint.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto; 
+        }
+
+        .footer-hint:hover {
+            animation-play-state: paused;
+            background: rgba(255, 255, 255, 0.98);
+            color: var(--p3-accent);
+            border-color: rgba(0, 0, 0, 0.8);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 5px 5px 25px rgba(255, 255, 255, 0.8), 0 10px 20px rgba(0, 0, 0, 0.2);
+            text-shadow: none;
+        }
+
+        .content-container {
+            position: absolute;
+            left: 40%;                     
+            top: 50%;
+            transform: translate(-50%, -50%); 
+            z-index: 2;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        #project-container {
+            left: 35%;
+            top: 46%;
+        }
+
+        .content-container.hidden {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.95);
+            pointer-events: none;
+        }
+
+        .content-box {
+            width: 580px;                  
+            padding: 35px 40px;
+            color: var(--p3-text-light);
+            font-size: 1.25rem;            
+            font-weight: bold;             
+            line-height: 2.2;              
+            animation-delay: 0.2s;
+        }
+
+        .project-box {
+            width: 880px;  
+            height: 690px; 
+            padding: 20px;
+            filter: none !important;
+        }
+
+        .project-box iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #ffffff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <svg style="position: absolute; width: 0; height: 0;">
+        <defs>
+            <filter id="wave-filter">
+                <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+        </defs>
+    </svg>
+
+    <div class="overlay-glow"></div>
+
+    <img src="images/logo.jpg" class="school-logo" alt="UET Round Logo">
+
+    <div class="header-title-text" id="main-portfolio-title">
+        <h1>My Portfolio</h1>
+    </div>
+
+    <div class="footer-hint" id="btn-footer-esc">
+        Esc - Back
+    </div>
+
+    <div id="intro-container" class="content-container hidden">
+        <div class="content-box">
+            Họ và tên: Nguyễn Gia Huy, mã sinh viên: 25020616<br>
+            Ngành học: Computer Engineering- Kỹ thuật máy tính<br>
+            Lớp học: E-CE4
+        </div>
+    </div>
+
+    <div id="contact-container" class="content-container hidden">
+        <div class="content-box">
+            Gmail: 25020616@vnu.edu.vn<br>
+            Phone Number: 0979235804
+        </div>
+    </div>
+
+    <div id="extra-container" class="content-container hidden">
+        <div class="content-box">
+            Em lên ý tưởng và thực hành, cũng như 1 phần AI đã giúp đỡ em trong khoảng thời gian này. Thực sự, AI đã rút ngắn thời gian rất nhiều trong các khoản lên ý tưởng, lên khung, và khắc phục lỗi của mình. Em tin rằng môn công nghệ số này sẽ giúp đỡ rất nhiều cho các bạn học cách sử dụng công nghệ đúng cách. Hãy dùng AI một cách hợp lý chứ đừng lạm dụng nó!
+        </div>
+    </div>
+
+    <div id="project-container" class="content-container hidden">
+        <div class="content-box project-box">
+            <iframe id="project-viewer" src=""></iframe>
+        </div>
+    </div>
+
+    <div class="right-layout">
+        <div class="menu-wrapper">
+            
+            <div id="main-menu" class="menu-container">
+                <div class="menu-item" data-num="01" id="btn-about-me">
+                    <span>About Me</span>
+                </div>
+                <div class="menu-item" data-num="02" id="btn-projects">
+                    <span>Projects</span>
+                </div>
+                <div class="menu-item" data-num="03" id="btn-extra">
+                    <span>Extra</span>
+                </div>
+            </div>
+
+            <div id="about-submenu" class="menu-container hidden">
+                <div class="menu-item" data-num="A-1" id="btn-introduction">
+                    <span>Introduction</span>
+                </div>
+                <div class="menu-item" data-num="A-2" id="btn-contact">
+                    <span>Contact</span>
+                </div>
+                <div class="menu-item btn-back" data-num="<<" id="btn-back-about">
+                    <span>Back</span>
+                </div>
+            </div>
+
+            <div id="projects-submenu" class="menu-container hidden">
+                <div class="menu-item" data-num="P-1" data-file="chuong1.pdf">
+                    <span>Chapter 1 Summary</span>
+                </div>
+                <div class="menu-item" data-num="P-2" data-file="chuong2.pdf">
+                    <span>Chapter 2 Summary</span>
+                </div>
+                <div class="menu-item" data-num="P-3" data-file="chuong3.pdf">
+                    <span>Chapter 3 Summary</span>
+                </div>
+                <div class="menu-item" data-num="P-4" data-file="chuong4.pdf">
+                    <span>Chapter 4 Summary</span>
+                </div>
+                <div class="menu-item" data-num="P-5" data-file="chuong5.pdf">
+                    <span>Chapter 5 Summary</span>
+                </div>
+                <div class="menu-item" data-num="P-6" data-file="chuong6.pdf">
+                    <span>Chapter 6 Summary</span>
+                </div>
+                <div class="menu-item btn-back" data-num="<<" id="btn-back-projects">
+                    <span>Back</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const mainMenu = document.getElementById('main-menu');
+        const aboutSubmenu = document.getElementById('about-submenu');
+        const projectsSubmenu = document.getElementById('projects-submenu');
+
+        const btnAboutMe = document.getElementById('btn-about-me');
+        const btnProjects = document.getElementById('btn-projects');
+        const btnIntroduction = document.getElementById('btn-introduction'); 
+        const btnContact = document.getElementById('btn-contact'); 
+        const btnExtra = document.getElementById('btn-extra');
+
+        const btnBackAbout = document.getElementById('btn-back-about');
+        const btnBackProjects = document.getElementById('btn-back-projects');
+
+        const footerHint = document.getElementById('btn-footer-esc');
+        const mainTitle = document.getElementById('main-portfolio-title'); 
+
+        const introContainer = document.getElementById('intro-container');
+        const contactContainer = document.getElementById('contact-container'); 
+        const extraContainer = document.getElementById('extra-container');
+        const projectContainer = document.getElementById('project-container');
+        const projectViewer = document.getElementById('project-viewer');
+
+        function closeAllContentBoxes() {
+             introContainer.classList.add('hidden');
+             contactContainer.classList.add('hidden');
+             extraContainer.classList.add('hidden');
+             projectContainer.classList.add('hidden');
+             projectViewer.src = ""; 
+             mainTitle.classList.remove('hidden'); 
+        }
+
+        function backToMainMenu() {
+            closeAllContentBoxes(); 
+
+            if (!aboutSubmenu.classList.contains('hidden')) {
+                aboutSubmenu.classList.add('hidden');
+                setTimeout(() => mainMenu.classList.remove('hidden'), 200);
+                footerHint.classList.remove('visible'); 
+            } else if (!projectsSubmenu.classList.contains('hidden')) {
+                projectsSubmenu.classList.add('hidden');
+                setTimeout(() => mainMenu.classList.remove('hidden'), 200);
+                footerHint.classList.remove('visible'); 
+            }
+        }
+
+        btnAboutMe.addEventListener('click', () => {
+            closeAllContentBoxes(); 
+            mainMenu.classList.add('hidden');
+            setTimeout(() => {
+                aboutSubmenu.classList.remove('hidden');
+                footerHint.classList.add('visible'); 
+            }, 200);
+        });
+
+        btnProjects.addEventListener('click', () => {
+            closeAllContentBoxes(); 
+            mainMenu.classList.add('hidden');
+            setTimeout(() => {
+                projectsSubmenu.classList.remove('hidden');
+                footerHint.classList.add('visible'); 
+            }, 200);
+        });
+
+        btnIntroduction.addEventListener('click', () => {
+            contactContainer.classList.add('hidden');
+            projectContainer.classList.add('hidden');
+            extraContainer.classList.add('hidden');
+            mainTitle.classList.remove('hidden'); 
+            introContainer.classList.toggle('hidden');
+        });
+
+        btnContact.addEventListener('click', () => {
+            introContainer.classList.add('hidden');
+            projectContainer.classList.add('hidden');
+            extraContainer.classList.add('hidden');
+            mainTitle.classList.remove('hidden'); 
+            contactContainer.classList.toggle('hidden');
+        });
+
+        btnExtra.addEventListener('click', () => {
+            introContainer.classList.add('hidden');
+            contactContainer.classList.add('hidden');
+            projectContainer.classList.add('hidden');
+            mainTitle.classList.remove('hidden');
+            extraContainer.classList.toggle('hidden');
+        });
+
+        btnBackAbout.addEventListener('click', backToMainMenu);
+        btnBackProjects.addEventListener('click', backToMainMenu);
+        footerHint.addEventListener('click', backToMainMenu); 
+
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' || event.key === 'Esc') {
+                backToMainMenu();
+            }
+        });
+
+        document.querySelectorAll('.menu-item').forEach(item => {
+            const itemId = item.id;
+            const fileName = item.getAttribute('data-file'); 
+
+            if(itemId !== 'btn-about-me' && itemId !== 'btn-projects' && itemId !== 'btn-introduction' && itemId !== 'btn-contact' && itemId !== 'btn-back-about' && itemId !== 'btn-back-projects' && itemId !== 'btn-extra') {
+                item.addEventListener('click', () => {
+                    
+                    if (fileName) {
+                        const targetSrc = `./projects/${fileName}`; 
+                        
+                        if (!projectContainer.classList.contains('hidden') && projectViewer.src.includes(fileName)) {
+                            projectContainer.classList.add('hidden');
+                            projectViewer.src = "";
+                            mainTitle.classList.remove('hidden'); 
+                        } else {
+                            closeAllContentBoxes();
+                            projectViewer.src = targetSrc;
+                            projectContainer.classList.remove('hidden');
+                            mainTitle.classList.add('hidden'); 
+                        }
+                    } else {
+                        closeAllContentBoxes(); 
+                        alert(`You just clicked: ${item.querySelector('span').innerText}`);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
