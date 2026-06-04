@@ -74,7 +74,7 @@
 
         .header-title-text {
             position: absolute;
-            top: 5%;
+            top: 6%;
             right: 5%;
             z-index: 3;
             animation: title-float 4s ease-in-out infinite;
@@ -90,17 +90,46 @@
         .header-title-text h1 {
             font-family: 'Special Elite', system-ui, -apple-system, sans-serif !important; 
             font-weight: 900;
-            font-size: 3.8rem; 
+            font-size: 5.5rem; 
             color: var(--p3-accent);
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 6px;
             white-space: nowrap;
+            position: relative;
+            display: inline-block;
+        }
+
+        .header-title-text h1::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--p3-accent);
+            transform-origin: right;
+            animation: line-grow 4s ease-in-out infinite;
+        }
+
+        @keyframes line-grow {
+            0% { transform: scaleX(1); opacity: 1; }
+            50% { transform: scaleX(0.85); opacity: 0.5; }
+            100% { transform: scaleX(1); opacity: 1; }
         }
 
         @keyframes title-float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-6px) rotate(-0.5deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
+            0% { 
+                transform: translateY(0px) rotate(0deg); 
+                text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+            }
+            50% { 
+                transform: translateY(-10px) rotate(-1deg); 
+                text-shadow: 4px 12px 20px rgba(0, 0, 0, 0.2), -2px -2px 0px rgba(255, 255, 255, 0.8);
+            }
+            100% { 
+                transform: translateY(0px) rotate(0deg); 
+                text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+            }
         }
 
         .right-layout {
@@ -486,38 +515,31 @@
     </div>
 
     <script>
-        // DOM Elements cho các Menu Container
         const mainMenu = document.getElementById('main-menu');
         const aboutSubmenu = document.getElementById('about-submenu');
         const projectsSubmenu = document.getElementById('projects-submenu');
         const summarySubmenu = document.getElementById('summary-submenu'); 
 
-        // DOM Elements cho các Nút kích hoạt Menu cha
         const btnAboutMe = document.getElementById('btn-about-me');
         const btnProjects = document.getElementById('btn-projects');
         const btnSummary = document.getElementById('btn-summary'); 
         const btnExtra = document.getElementById('btn-extra');
 
-        // DOM Elements cho các Nút trong Menu con About
         const btnIntroduction = document.getElementById('btn-introduction'); 
         const btnTarget = document.getElementById('btn-target'); 
         const btnMore = document.getElementById('btn-more'); 
 
-        // DOM Elements cho các Nút trong Menu con Summary
         const btnThinking = document.getElementById('btn-thinking');
         const btnKnowledge = document.getElementById('btn-knowledge');
         const btnChallenges = document.getElementById('btn-challenges');
 
-        // DOM Elements cho các Nút quay lại (Back)
         const btnBackAbout = document.getElementById('btn-back-about');
         const btnBackProjects = document.getElementById('btn-back-projects');
         const btnBackSummary = document.getElementById('btn-back-summary'); 
 
-        // Hệ thống hiển thị chung
         const footerHint = document.getElementById('btn-footer-esc');
         const mainTitle = document.getElementById('main-portfolio-title'); 
 
-        // DOM Elements cho các Content Box hiển thị nội dung
         const introContainer = document.getElementById('intro-container');
         const targetContainer = document.getElementById('target-container');
         const moreContainer = document.getElementById('more-container');
@@ -530,7 +552,6 @@
         const knowledgeContainer = document.getElementById('knowledge-container');
         const challengesContainer = document.getElementById('challenges-container');
 
-        // Hàm đóng tất cả các bảng thông tin nội dung đang mở
         function closeAllContentBoxes() {
              introContainer.classList.add('hidden');
              targetContainer.classList.add('hidden');
@@ -544,7 +565,6 @@
              mainTitle.classList.remove('hidden'); 
         }
 
-        // Hàm xử lý quay lại Menu chính
         function backToMainMenu() {
             closeAllContentBoxes(); 
 
@@ -563,7 +583,6 @@
             }
         }
 
-        // --- SỰ KIỆN CHO CÁC MENU CHA CHÍNH ---
         btnAboutMe.addEventListener('click', () => {
             closeAllContentBoxes(); 
             mainMenu.classList.add('hidden');
@@ -600,7 +619,6 @@
             }
         });
 
-        // --- SỰ KIỆN KHỐI NỘI DUNG MENU CON ABOUT ME ---
         btnIntroduction.addEventListener('click', () => {
             const isHidden = introContainer.classList.contains('hidden');
             closeAllContentBoxes();
@@ -619,7 +637,6 @@
             if (isHidden) moreContainer.classList.remove('hidden');
         });
 
-        // --- SỰ KIỆN KHỐI NỘI DUNG MENU CON SUMMARY ---
         btnThinking.addEventListener('click', () => {
             const isHidden = thinkingContainer.classList.contains('hidden');
             closeAllContentBoxes();
@@ -638,20 +655,17 @@
             if (isHidden) challengesContainer.classList.remove('hidden');
         });
 
-        // --- SỰ KIỆN NÚT QUAY LẠI ---
         btnBackAbout.addEventListener('click', backToMainMenu);
         btnBackProjects.addEventListener('click', backToMainMenu);
         btnBackSummary.addEventListener('click', backToMainMenu);
         footerHint.addEventListener('click', backToMainMenu); 
 
-        // Bắt sự kiện nút Esc vật lý
         window.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' || event.key === 'Esc') {
                 backToMainMenu();
             }
         });
 
-        // --- TỰ ĐỘNG CHẠY HOẠT ẢNH HOẶC IFRAME FILE ---
         document.querySelectorAll('.menu-item').forEach(item => {
             const itemId = item.id;
             const fileName = item.getAttribute('data-file'); 
@@ -683,7 +697,6 @@
             }
         });
 
-        // ================== TÍNH NĂNG DRAG & DROP CHO KHUNG PROJECT ==================
         const dragHandle = document.getElementById('drag-handle');
         let isDragging = false;
         let offsetX = 0;
