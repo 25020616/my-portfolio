@@ -108,7 +108,7 @@
             top: 50%;                 
             transform: translateY(-50%); 
             right: 2%; 
-            width: 360px;             
+            width: 480px;             
             display: flex;
             flex-direction: column;
             align-items: flex-end; 
@@ -160,10 +160,11 @@
         .menu-container .menu-item:nth-child(4) { animation-delay: 1.2s; }
         .menu-container .menu-item:nth-child(5) { animation-delay: 1.6s; }
         .menu-container .menu-item:nth-child(6) { animation-delay: 2s; }
+        .menu-container .menu-item:nth-child(7) { animation-delay: 2.4s; }
 
         .menu-item span {
             font-weight: bold;
-            font-size: 1.35rem;       
+            font-size: 1.25rem;       
             text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--p3-text-light);
@@ -252,16 +253,11 @@
 
         .content-container {
             position: absolute;
-            left: 40%;                     
+            left: 30%;                     
             top: 50%;
             transform: translate(-50%, -50%); 
             z-index: 2;
             transition: opacity 0.4s ease, transform 0.4s ease;
-        }
-
-        #project-container {
-            left: 35%;
-            top: 46%;
         }
 
         .content-container.hidden {
@@ -270,8 +266,20 @@
             pointer-events: none;
         }
 
+        #project-container {
+            left: 8vw;
+            top: 10vh;
+            transform: none !important; 
+            transition: opacity 0.3s ease; 
+        }
+
+        #project-container.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
         .content-box {
-            width: 580px;                  
+            width: 580px;                                  
             padding: 35px 40px;
             color: var(--p3-text-light);
             font-size: 1.25rem;            
@@ -281,18 +289,44 @@
         }
 
         .project-box {
-            width: 880px;  
-            height: 690px; 
-            padding: 20px;
+            width: 800px;  
+            height: 650px; 
+            padding: 0 !important; 
             filter: none !important;
+            display: flex;
+            flex-direction: column;
+            resize: both; 
+            overflow: hidden;
+            min-width: 400px;
+            min-height: 300px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .drag-handle {
+            width: 100%;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: #fff;
+            user-select: none;
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
+            background: rgba(255, 255, 255, 0.25);
         }
 
         .project-box iframe {
+            flex-grow: 1; 
             width: 100%;
-            height: 100%;
             border: none;
             background: #ffffff;
-            border-radius: 4px;
+            border-radius: 0 0 6px 6px;
         }
     </style>
 </head>
@@ -312,7 +346,7 @@
     <img src="images/logo.jpg" class="school-logo" alt="UET Round Logo">
 
     <div class="header-title-text" id="main-portfolio-title">
-        <h1>My Portfolio</h1>
+        <h1>Huy's Portfolio</h1>
     </div>
 
     <div class="footer-hint" id="btn-footer-esc">
@@ -322,15 +356,44 @@
     <div id="intro-container" class="content-container hidden">
         <div class="content-box">
             Họ và tên: Nguyễn Gia Huy, mã sinh viên: 25020616<br>
-            Ngành học: Computer Engineering- Kỹ thuật máy tính<br>
+            Ngành học: Computer Engineering - Kỹ thuật máy tính<br>
             Lớp học: E-CE4
         </div>
     </div>
 
-    <div id="contact-container" class="content-container hidden">
+    <div id="target-container" class="content-container hidden">
         <div class="content-box">
-            Gmail: 25020616@vnu.edu.vn<br>
-            Phone Number: 0979235804
+            Mục tiêu của Portfolio này là hệ thống hóa lại toàn bộ kiến thức đã học trong học phần, thực hành kỹ năng xây dựng website cá nhân và thể hiện quá trình phát triển tư duy công nghệ của bản thân qua các bài tập thực tế.
+        </div>
+    </div>
+
+    <div id="more-container" class="content-container hidden">
+        <div class="content-box">
+            Ngoài giờ học, em có đam mê tìm hiểu sâu về Trí tuệ nhân tạo (AI), phát triển các dự án cá nhân nhỏ gọn để tự rèn luyện kỹ năng code, và luôn sẵn sàng học hỏi, làm việc nhóm để giải quyết các vấn đề mới.
+        </div>
+    </div>
+
+    <div id="thinking-container" class="content-container hidden">
+        <div class="content-box">
+            Em đã hoàn thành portfolio cá nhân, cũng như hiểu bài tốt những bài học trong các chương vừa rồi, cũng như vận dụng chúng trong project của chính mình.
+        </div>
+    </div>
+
+    <div id="knowledge-container" class="content-container hidden">
+        <div class="content-box">
+            - Em đã học được cách sắp xếp tài liệu, tệp tin, thao tác với thư mục.<br>
+            - Em biết cách tìm kiếm, đánh giá thông tin học thuật.<br>
+            - Em cũng học được cách viết lệnh hiệu quả, "Precise Prompting".<br>
+            - Em học được cách sáng tạo nội dung cũng như áp dụng những điều mình nghĩ vào thực hành nhóm.<br>
+            - Em cũng trách nhiệm hơn khi sử dụng AI trong nghiên cứu.
+        </div>
+    </div>
+
+    <div id="challenges-container" class="content-container hidden">
+        <div class="content-box">
+            - Khó khăn khi làm portfolio là khi quyết định chọn phương pháp nào để trình bày, Google Site hay HTML.<br>
+            - Em tự nhận thấy làm HTML thì em sẽ phải học hỏi nhiều, vừa học hỏi vừa thực hành làm project.<br>
+            - Phải tự prompt lại cho AI khi nó hiểu sai yêu cầu mình đề ra, cũng như phải xem xét từng ý tưởng AI cho mình.
         </div>
     </div>
 
@@ -342,6 +405,7 @@
 
     <div id="project-container" class="content-container hidden">
         <div class="content-box project-box">
+            <div class="drag-handle" id="drag-handle">✥ Kéo thanh này để di chuyển - Góc phải dưới để thu phóng ✥</div>
             <iframe id="project-viewer" src=""></iframe>
         </div>
     </div>
@@ -356,7 +420,10 @@
                 <div class="menu-item" data-num="02" id="btn-projects">
                     <span>Projects</span>
                 </div>
-                <div class="menu-item" data-num="03" id="btn-extra">
+                <div class="menu-item" data-num="03" id="btn-summary">
+                    <span>Summary</span>
+                </div>
+                <div class="menu-item" data-num="04" id="btn-extra">
                     <span>Extra</span>
                 </div>
             </div>
@@ -365,8 +432,11 @@
                 <div class="menu-item" data-num="A-1" id="btn-introduction">
                     <span>Introduction</span>
                 </div>
-                <div class="menu-item" data-num="A-2" id="btn-contact">
-                    <span>Contact</span>
+                <div class="menu-item" data-num="A-2" id="btn-target">
+                    <span>Portfolio's Target</span>
+                </div>
+                <div class="menu-item" data-num="A-3" id="btn-more">
+                    <span>More Of Me</span>
                 </div>
                 <div class="menu-item btn-back" data-num="<<" id="btn-back-about">
                     <span>Back</span>
@@ -375,24 +445,39 @@
 
             <div id="projects-submenu" class="menu-container hidden">
                 <div class="menu-item" data-num="P-1" data-file="chuong1.pdf">
-                    <span>Chapter 1 Summary</span>
+                    <span>Chapter 1 - Thao tác với tệp tin</span>
                 </div>
                 <div class="menu-item" data-num="P-2" data-file="chuong2.pdf">
-                    <span>Chapter 2 Summary</span>
+                    <span>Chapter 2 - Tìm kiếm thông tin</span>
                 </div>
                 <div class="menu-item" data-num="P-3" data-file="chuong3.pdf">
-                    <span>Chapter 3 Summary</span>
+                    <span>Chapter 3 - Prompt hiệu quả</span>
                 </div>
                 <div class="menu-item" data-num="P-4" data-file="chuong4.pdf">
-                    <span>Chapter 4 Summary</span>
+                    <span>Chapter 4 - Công cụ nhóm</span>
                 </div>
                 <div class="menu-item" data-num="P-5" data-file="chuong5.pdf">
-                    <span>Chapter 5 Summary</span>
+                    <span>Chapter 5 - AI tạo sinh</span>
                 </div>
                 <div class="menu-item" data-num="P-6" data-file="chuong6.pdf">
-                    <span>Chapter 6 Summary</span>
+                    <span>Chapter 6 - Dùng AI có trách nhiệm</span>
                 </div>
                 <div class="menu-item btn-back" data-num="<<" id="btn-back-projects">
+                    <span>Back</span>
+                </div>
+            </div>
+
+            <div id="summary-submenu" class="menu-container hidden">
+                <div class="menu-item" data-num="S-1" id="btn-thinking">
+                    <span>Thinking</span>
+                </div>
+                <div class="menu-item" data-num="S-2" id="btn-knowledge">
+                    <span>Knowledge</span>
+                </div>
+                <div class="menu-item" data-num="S-3" id="btn-challenges">
+                    <span>Challenges</span>
+                </div>
+                <div class="menu-item btn-back" data-num="<<" id="btn-back-summary">
                     <span>Back</span>
                 </div>
             </div>
@@ -401,37 +486,65 @@
     </div>
 
     <script>
+        // DOM Elements cho các Menu Container
         const mainMenu = document.getElementById('main-menu');
         const aboutSubmenu = document.getElementById('about-submenu');
         const projectsSubmenu = document.getElementById('projects-submenu');
+        const summarySubmenu = document.getElementById('summary-submenu'); 
 
+        // DOM Elements cho các Nút kích hoạt Menu cha
         const btnAboutMe = document.getElementById('btn-about-me');
         const btnProjects = document.getElementById('btn-projects');
-        const btnIntroduction = document.getElementById('btn-introduction'); 
-        const btnContact = document.getElementById('btn-contact'); 
+        const btnSummary = document.getElementById('btn-summary'); 
         const btnExtra = document.getElementById('btn-extra');
 
+        // DOM Elements cho các Nút trong Menu con About
+        const btnIntroduction = document.getElementById('btn-introduction'); 
+        const btnTarget = document.getElementById('btn-target'); 
+        const btnMore = document.getElementById('btn-more'); 
+
+        // DOM Elements cho các Nút trong Menu con Summary
+        const btnThinking = document.getElementById('btn-thinking');
+        const btnKnowledge = document.getElementById('btn-knowledge');
+        const btnChallenges = document.getElementById('btn-challenges');
+
+        // DOM Elements cho các Nút quay lại (Back)
         const btnBackAbout = document.getElementById('btn-back-about');
         const btnBackProjects = document.getElementById('btn-back-projects');
+        const btnBackSummary = document.getElementById('btn-back-summary'); 
 
+        // Hệ thống hiển thị chung
         const footerHint = document.getElementById('btn-footer-esc');
         const mainTitle = document.getElementById('main-portfolio-title'); 
 
+        // DOM Elements cho các Content Box hiển thị nội dung
         const introContainer = document.getElementById('intro-container');
-        const contactContainer = document.getElementById('contact-container'); 
+        const targetContainer = document.getElementById('target-container');
+        const moreContainer = document.getElementById('more-container');
+        
         const extraContainer = document.getElementById('extra-container');
         const projectContainer = document.getElementById('project-container');
         const projectViewer = document.getElementById('project-viewer');
 
+        const thinkingContainer = document.getElementById('thinking-container');
+        const knowledgeContainer = document.getElementById('knowledge-container');
+        const challengesContainer = document.getElementById('challenges-container');
+
+        // Hàm đóng tất cả các bảng thông tin nội dung đang mở
         function closeAllContentBoxes() {
              introContainer.classList.add('hidden');
-             contactContainer.classList.add('hidden');
+             targetContainer.classList.add('hidden');
+             moreContainer.classList.add('hidden');
+             thinkingContainer.classList.add('hidden');
+             knowledgeContainer.classList.add('hidden');
+             challengesContainer.classList.add('hidden');
              extraContainer.classList.add('hidden');
              projectContainer.classList.add('hidden');
              projectViewer.src = ""; 
              mainTitle.classList.remove('hidden'); 
         }
 
+        // Hàm xử lý quay lại Menu chính
         function backToMainMenu() {
             closeAllContentBoxes(); 
 
@@ -443,9 +556,14 @@
                 projectsSubmenu.classList.add('hidden');
                 setTimeout(() => mainMenu.classList.remove('hidden'), 200);
                 footerHint.classList.remove('visible'); 
+            } else if (!summarySubmenu.classList.contains('hidden')) {
+                summarySubmenu.classList.add('hidden');
+                setTimeout(() => mainMenu.classList.remove('hidden'), 200);
+                footerHint.classList.remove('visible'); 
             }
         }
 
+        // --- SỰ KIỆN CHO CÁC MENU CHA CHÍNH ---
         btnAboutMe.addEventListener('click', () => {
             closeAllContentBoxes(); 
             mainMenu.classList.add('hidden');
@@ -464,47 +582,89 @@
             }, 200);
         });
 
-        btnIntroduction.addEventListener('click', () => {
-            contactContainer.classList.add('hidden');
-            projectContainer.classList.add('hidden');
-            extraContainer.classList.add('hidden');
-            mainTitle.classList.remove('hidden'); 
-            introContainer.classList.toggle('hidden');
-        });
-
-        btnContact.addEventListener('click', () => {
-            introContainer.classList.add('hidden');
-            projectContainer.classList.add('hidden');
-            extraContainer.classList.add('hidden');
-            mainTitle.classList.remove('hidden'); 
-            contactContainer.classList.toggle('hidden');
+        btnSummary.addEventListener('click', () => {
+            closeAllContentBoxes();
+            mainMenu.classList.add('hidden');
+            setTimeout(() => {
+                summarySubmenu.classList.remove('hidden');
+                footerHint.classList.add('visible');
+            }, 200);
         });
 
         btnExtra.addEventListener('click', () => {
-            introContainer.classList.add('hidden');
-            contactContainer.classList.add('hidden');
-            projectContainer.classList.add('hidden');
-            mainTitle.classList.remove('hidden');
-            extraContainer.classList.toggle('hidden');
+            const isHidden = extraContainer.classList.contains('hidden');
+            closeAllContentBoxes();
+            if (isHidden) {
+                mainTitle.classList.add('hidden'); 
+                extraContainer.classList.remove('hidden');
+            }
         });
 
+        // --- SỰ KIỆN KHỐI NỘI DUNG MENU CON ABOUT ME ---
+        btnIntroduction.addEventListener('click', () => {
+            const isHidden = introContainer.classList.contains('hidden');
+            closeAllContentBoxes();
+            if (isHidden) introContainer.classList.remove('hidden');
+        });
+
+        btnTarget.addEventListener('click', () => {
+            const isHidden = targetContainer.classList.contains('hidden');
+            closeAllContentBoxes();
+            if (isHidden) targetContainer.classList.remove('hidden');
+        });
+
+        btnMore.addEventListener('click', () => {
+            const isHidden = moreContainer.classList.contains('hidden');
+            closeAllContentBoxes();
+            if (isHidden) moreContainer.classList.remove('hidden');
+        });
+
+        // --- SỰ KIỆN KHỐI NỘI DUNG MENU CON SUMMARY ---
+        btnThinking.addEventListener('click', () => {
+            const isHidden = thinkingContainer.classList.contains('hidden');
+            closeAllContentBoxes();
+            if (isHidden) thinkingContainer.classList.remove('hidden');
+        });
+
+        btnKnowledge.addEventListener('click', () => {
+            const isHidden = knowledgeContainer.classList.contains('hidden');
+            closeAllContentBoxes();
+            if (isHidden) knowledgeContainer.classList.remove('hidden');
+        });
+
+        btnChallenges.addEventListener('click', () => {
+            const isHidden = challengesContainer.classList.contains('hidden');
+            closeAllContentBoxes();
+            if (isHidden) challengesContainer.classList.remove('hidden');
+        });
+
+        // --- SỰ KIỆN NÚT QUAY LẠI ---
         btnBackAbout.addEventListener('click', backToMainMenu);
         btnBackProjects.addEventListener('click', backToMainMenu);
+        btnBackSummary.addEventListener('click', backToMainMenu);
         footerHint.addEventListener('click', backToMainMenu); 
 
+        // Bắt sự kiện nút Esc vật lý
         window.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' || event.key === 'Esc') {
                 backToMainMenu();
             }
         });
 
+        // --- TỰ ĐỘNG CHẠY HOẠT ẢNH HOẶC IFRAME FILE ---
         document.querySelectorAll('.menu-item').forEach(item => {
             const itemId = item.id;
             const fileName = item.getAttribute('data-file'); 
 
-            if(itemId !== 'btn-about-me' && itemId !== 'btn-projects' && itemId !== 'btn-introduction' && itemId !== 'btn-contact' && itemId !== 'btn-back-about' && itemId !== 'btn-back-projects' && itemId !== 'btn-extra') {
+            const specializedIds = [
+                'btn-about-me', 'btn-projects', 'btn-summary', 'btn-extra',
+                'btn-introduction', 'btn-target', 'btn-more',
+                'btn-thinking', 'btn-knowledge', 'btn-challenges',
+                'btn-back-about', 'btn-back-projects', 'btn-back-summary'
+            ];
+
+            if (!specializedIds.includes(itemId)) {
                 item.addEventListener('click', () => {
-                    
                     if (fileName) {
                         const targetSrc = `./projects/${fileName}`; 
                         
@@ -518,11 +678,39 @@
                             projectContainer.classList.remove('hidden');
                             mainTitle.classList.add('hidden'); 
                         }
-                    } else {
-                        closeAllContentBoxes(); 
-                        alert(`You just clicked: ${item.querySelector('span').innerText}`);
                     }
                 });
+            }
+        });
+
+        // ================== TÍNH NĂNG DRAG & DROP CHO KHUNG PROJECT ==================
+        const dragHandle = document.getElementById('drag-handle');
+        let isDragging = false;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        dragHandle.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            projectViewer.style.pointerEvents = 'none';
+
+            const rect = projectContainer.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const newX = e.clientX - offsetX;
+            const newY = e.clientY - offsetY;
+
+            projectContainer.style.left = `${newX}px`;
+            projectContainer.style.top = `${newY}px`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                projectViewer.style.pointerEvents = 'auto';
             }
         });
     </script>
