@@ -12,7 +12,7 @@
     <style>
         :root {
             --p3-accent: #000000;          
-            --p3-menu-bg: rgba(0, 0, 0, 0.85); 
+            --p3-menu-bg: rgba(0, 0, 0, 0.75); /* Giảm nhẹ alpha để lộ hiệu ứng kính mờ */
             --p3-text-light: #ffffff;      
             --p3-white: #ffffff;
         }
@@ -32,11 +32,10 @@
         body {
             background-color: #000000; 
             color: var(--p3-accent);
-            overflow: hidden;
+            overflow-x: hidden;
             height: 100vh;
         }
 
-        /* Nền video đã được ép thành màu xám đồng bộ */
         .video-bg {
             position: fixed;
             top: 0;
@@ -45,7 +44,6 @@
             height: 100%;
             object-fit: cover;
             z-index: -1;
-            /* grayscale(100%) sẽ biến mọi video thành xám/trắng/đen */
             filter: grayscale(100%) brightness(0.4) contrast(1.2); 
         }
 
@@ -169,6 +167,8 @@
         .menu-item, .footer-hint, .content-box {
             position: relative;
             background: var(--p3-menu-bg);
+            backdrop-filter: blur(8px); /* Tạo hiệu ứng kính mờ siêu sang chảnh */
+            -webkit-backdrop-filter: blur(8px);
             border-radius: 6px; 
             filter: url(#wave-filter);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -185,12 +185,12 @@
         }
 
         .menu-container .menu-item:nth-child(1) { animation-delay: 0s; }
-        .menu-container .menu-item:nth-child(2) { animation-delay: 0.4s; }
-        .menu-container .menu-item:nth-child(3) { animation-delay: 0.8s; }
-        .menu-container .menu-item:nth-child(4) { animation-delay: 1.2s; }
-        .menu-container .menu-item:nth-child(5) { animation-delay: 1.6s; }
-        .menu-container .menu-item:nth-child(6) { animation-delay: 2s; }
-        .menu-container .menu-item:nth-child(7) { animation-delay: 2.4s; }
+        .menu-container .menu-item:nth-child(2) { animation-delay: 0.1s; }
+        .menu-container .menu-item:nth-child(3) { animation-delay: 0.2s; }
+        .menu-container .menu-item:nth-child(4) { animation-delay: 0.3s; }
+        .menu-container .menu-item:nth-child(5) { animation-delay: 0.4s; }
+        .menu-container .menu-item:nth-child(6) { animation-delay: 0.5s; }
+        .menu-container .menu-item:nth-child(7) { animation-delay: 0.6s; }
 
         .menu-item span {
             font-weight: bold;
@@ -257,7 +257,7 @@
             color: var(--p3-text-light);
             padding: 15px 30px;
             text-transform: uppercase;
-            z-index: 3;
+            z-index: 11; /* Đẩy lên cao nhất để mobile bấm phát ăn ngay */
             cursor: pointer;
             opacity: 0;
             transform: translateY(20px);
@@ -358,6 +358,108 @@
             background: #ffffff;
             border-radius: 0 0 6px 6px;
         }
+
+        /* ==========================================================================
+           BỘ CODE RESPONSIVE - THÍCH ỨNG MỌI MÀN HÌNH (MỚI THÊM)
+           ========================================================================== */
+        
+        /* Cho màn hình máy tính nhỏ & Laptop (Dưới 1200px) */
+        @media (max-width: 1200px) {
+            .header-title-text h1 { font-size: 4rem; }
+            .right-layout { width: 400px; }
+            .content-box { width: 480px; font-size: 1.15rem; }
+            .project-box { width: 680px; height: 550px; }
+        }
+
+        /* Cho Máy tính bảng & Điện thoại (Dưới 768px) -> Chuyển sang bố cục dọc dọc */
+        @media (max-width: 768px) {
+            body { overflow-y: auto; } /* Cho phép cuộn trang nếu menu dài */
+
+            /* Thu nhỏ logo trường, đẩy làm mờ hẳn làm nền để không che chữ */
+            .school-logo {
+                width: 45vh; height: 45vh;
+                left: 50%; top: 45%;
+                transform: translate(-50%, -50%) !important;
+                opacity: 0.12 !important;
+                animation: none; /* Tắt chuyển động để mượt pin điện thoại */
+            }
+
+            /* Tiêu đề căn giữa lên trên cùng */
+            .header-title-text {
+                top: 3%; right: 0; left: 0;
+                text-align: center;
+            }
+            .header-title-text h1 {
+                font-size: 2rem;
+                letter-spacing: 3px;
+                display: inline-block;
+            }
+            .header-title-text h1::after {
+                height: 3px;
+                animation: none;
+            }
+
+            /* Menu chính xếp ở giữa màn hình */
+            .right-layout {
+                position: relative;
+                top: auto; right: auto; transform: none;
+                width: 90%;
+                margin: 150px auto 100px auto; /* Tạo khoảng trống tránh đè tiêu đề */
+                align-items: center;
+            }
+            .menu-container { gap: 12px; width: 100%; }
+            .menu-item { padding: 15px 25px; text-align: center; }
+            .menu-item::before { left: 20px; font-size: 0.75rem; }
+            .menu-item span { font-size: 1.1rem; }
+            .menu-item:hover { transform: translateY(-3px) scale(1.02) !important; }
+
+            /* Khung nội dung text đè full màn hình cực đẹp */
+            .content-container {
+                position: fixed;
+                left: 50% !important; top: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                width: 92vw;
+                z-index: 10;
+            }
+            .content-box {
+                width: 100%;
+                padding: 25px 20px;
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            /* Khung xem file PDF tối ưu trên màn hình dọc */
+            #project-container {
+                left: 4vw !important; top: 12vh !important;
+                transform: none !important;
+            }
+            .project-box {
+                width: 92vw;
+                height: 70vh;
+            }
+            .drag-handle { font-size: 0.75rem; height: 40px; }
+
+            /* Nút Back cố định ở góc dưới giữa màn hình cho dễ bấm */
+            .footer-hint {
+                position: fixed;
+                bottom: 3%; left: 50%;
+                transform: translateX(-50%) translateY(20px);
+                padding: 12px 25px;
+                font-size: 0.95rem;
+                white-space: nowrap;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            }
+            .footer-hint.visible {
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* Tối ưu riêng cho các điện thoại rất nhỏ (Dưới 400px) */
+        @media (max-width: 400px) {
+            .header-title-text h1 { font-size: 1.6rem; }
+            .menu-item span { font-size: 1rem; }
+            .content-box { font-size: 0.9rem; padding: 15px; }
+        }
     </style>
 </head>
 <body>
@@ -394,6 +496,14 @@
     <div id="knowledge-container" class="content-container hidden"><div class="content-box">- Em đã học được cách sắp xếp tài liệu, tệp tin, thao tác với thư mục.<br>- Em biết cách tìm kiếm, đánh giá thông tin học thuật.<br>- Em cũng học được cách viết lệnh hiệu quả, "Precise Prompting".<br>- Em học được cách sáng tạo nội dung cũng như áp dụng những điều mình nghĩ vào thực hành nhóm.<br>- Em cũng trách nhiệm hơn khi sử dụng AI trong nghiên cứu.</div></div>
     <div id="challenges-container" class="content-container hidden"><div class="content-box">- Khó khăn khi làm portfolio là khi quyết định chọn phương pháp nào để trình bày, Google Site hay HTML.<br>- Em tự nhận thấy làm HTML thì em sẽ phải học hỏi nhiều, vừa học hỏi vừa thực hành làm project.<br>- Phải tự prompt lại cho AI khi nó hiểu sai yêu cầu mình đề ra, cũng như phải xem xét từng ý tưởng AI cho mình.</div></div>
     <div id="extra-container" class="content-container hidden"><div class="content-box">Em lên ý tưởng và thực hành, cũng như 1 phần AI đã giúp đỡ em trong khoảng thời gian này. Thực sự, AI đã rút ngắn thời gian rất nhiều trong các khoản lên ý tưởng, lên khung, và khắc phục lỗi của mình. Em tin rằng môn công nghệ số này sẽ giúp đỡ rất nhiều cho các bạn học cách sử dụng công nghệ đúng cách. Hãy dùng AI một cách hợp lý chứ đừng lạm dụng nó!</div></div>
+
+    <div id="c1-target-container" class="content-container hidden"><div class="content-box">Mục tiêu Chương 1:<br>Làm việc khoa học với file, tệp, làm chủ thao tác trên hệ điều hành của thư mục.</div></div>
+    <div id="c2-target-container" class="content-container hidden"><div class="content-box">Mục tiêu Chương 2:<br>Biết cách tìm hiểu thông tin đúng cách, tìm kiếm một cách khoa học, hiệu quả.</div></div>
+    <div id="c3-target-container" class="content-container hidden"><div class="content-box">Mục tiêu Chương 3:<br>Nghiên cứu sâu về bản chất, cơ chế phản hồi dữ liệu của các mô hình ngôn ngữ lớn (LLM); làm chủ tư duy viết câu lệnh (Prompt Engineering)</div></div>
+    <div id="c4-target-container" class="content-container hidden"><div class="content-box">Mục tiêu Chương 4:<br>Thiết lập, vận hành cũng như làm việc hiệu quả với nhóm bằng công nghệ, AI.</div></div>
+    <div id="c5-target-container" class="content-container hidden"><div class="content-box">Mục tiêu Chương 5:<br>Tận dụng AI tạo sinh trong công việc, tận dụng tối đa sức sáng tạo của AI.</div></div>
+    <div id="c6-target-container" class="content-container hidden"><div class="content-box">Mục tiêu Chương 6:<br>Định hình nhận thức sâu sắc về đạo đức công nghệ, quy chế liêm chính học thuật.</div></div>
+
     <div id="project-container" class="content-container hidden"><div class="content-box project-box"><div class="drag-handle" id="drag-handle">✥ Kéo thanh này để di chuyển - Góc phải dưới để thu phóng ✥</div><iframe id="project-viewer" src=""></iframe></div></div>
 
     <div class="right-layout">
@@ -407,18 +517,18 @@
 
             <div id="about-submenu" class="menu-container hidden">
                 <div class="menu-item" data-num="A-1" id="btn-introduction"><span>Giới thiệu</span></div>
-                <div class="menu-item" data-num="A-2" id="btn-target"><span>Mục tiêu dự án</span></div>
+                <div class="menu-item" data-num="A-2" id="btn-target"><span>Mục tiêu</span></div>
                 <div class="menu-item" data-num="A-3" id="btn-more"><span>Sở thích và định hướng</span></div>
                 <div class="menu-item btn-back" data-num="<<" id="btn-back-about"><span>Quay lại</span></div>
             </div>
 
             <div id="projects-submenu" class="menu-container hidden">
-                <div class="menu-item" data-num="P-1" data-file="chuong1.pdf"><span>Chương 1 - Thao tác với tệp tin</span></div>
-                <div class="menu-item" data-num="P-2" data-file="chuong2.pdf"><span>Chương 2 - Tìm kiếm thông tin</span></div>
-                <div class="menu-item" data-num="P-3" data-file="chuong3.pdf"><span>Chương 3 - Prompt hiệu quả</span></div>
-                <div class="menu-item" data-num="P-4" data-file="chuong4.pdf"><span>Chương 4 - Công cụ nhóm</span></div>
-                <div class="menu-item" data-num="P-5" data-file="chuong5.pdf"><span>Chương 5 - AI tạo sinh</span></div>
-                <div class="menu-item" data-num="P-6" data-file="chuong6.pdf"><span>Chương 6 - Dùng AI có trách nhiệm</span></div>
+                <div class="menu-item" data-num="P-1" id="btn-c1"><span>Chương 1 - Thao tác với tệp tin</span></div>
+                <div class="menu-item" data-num="P-2" id="btn-c2"><span>Chương 2 - Tìm kiếm thông tin</span></div>
+                <div class="menu-item" data-num="P-3" id="btn-c3"><span>Chương 3 - Prompt hiệu quả</span></div>
+                <div class="menu-item" data-num="P-4" id="btn-c4"><span>Chương 4 - Công cụ nhóm</span></div>
+                <div class="menu-item" data-num="P-5" id="btn-c5"><span>Chương 5 - AI tạo sinh</span></div>
+                <div class="menu-item" data-num="P-6" id="btn-c6"><span>Chương 6 - Dùng AI có trách nhiệm</span></div>
                 <div class="menu-item btn-back" data-num="<<" id="btn-back-projects"><span>Quay lại</span></div>
             </div>
 
@@ -428,11 +538,239 @@
                 <div class="menu-item" data-num="S-3" id="btn-challenges"><span>Thách thức</span></div>
                 <div class="menu-item btn-back" data-num="<<" id="btn-back-summary"><span>Quay lại</span></div>
             </div>
+
+            <div id="c1-submenu" class="menu-container hidden">
+                <div class="menu-item" data-num="1.1" data-file="chuong1.pdf"><span>Nội dung chương</span></div>
+                <div class="menu-item" data-num="1.2" id="btn-c1-target"><span>Mục tiêu</span></div>
+                <div class="menu-item btn-back" data-num="<<" id="btn-back-c1"><span>Quay lại</span></div>
+            </div>
+
+            <div id="c2-submenu" class="menu-container hidden">
+                <div class="menu-item" data-num="2.1" data-file="chuong2.pdf"><span>Nội dung chương</span></div>
+                <div class="menu-item" data-num="2.2" id="btn-c2-target"><span>Mục tiêu</span></div>
+                <div class="menu-item btn-back" data-num="<<" id="btn-back-c2"><span>Quay lại</span></div>
+            </div>
+
+            <div id="c3-submenu" class="menu-container hidden">
+                <div class="menu-item" data-num="3.1" data-file="chuong3.pdf"><span>Nội dung chương</span></div>
+                <div class="menu-item" data-num="3.2" id="btn-c3-target"><span>Mục tiêu</span></div>
+                <div class="menu-item btn-back" data-num="<<" id="btn-back-c3"><span>Quay lại</span></div>
+            </div>
+
+            <div id="c4-submenu" class="menu-container hidden">
+                <div class="menu-item" data-num="4.1" data-file="chuong4.pdf"><span>Nội dung chương</span></div>
+                <div class="menu-item" data-num="4.2" id="btn-c4-target"><span>Mục tiêu</span></div>
+                <div class="menu-item btn-back" data-num="<<" id="btn-back-c4"><span>Quay lại</span></div>
+            </div>
+
+            <div id="c5-submenu" class="menu-container hidden">
+                <div class="menu-item" data-num="5.1" data-file="chuong5.pdf"><span>Nội dung chương</span></div>
+                <div class="menu-item" data-num="5.2" id="btn-c5-target"><span>Mục tiêu</span></div>
+                <div class="menu-item btn-back" data-num="<<" id="btn-back-c5"><span>Quay lại</span></div>
+            </div>
+
+            <div id="c6-submenu" class="menu-container hidden">
+                <div class="menu-item" data-num="6.1" data-file="chuong6.pdf"><span>Nội dung chương</span></div>
+                <div class="menu-item" data-num="6.2" id="btn-c6-target"><span>Mục tiêu</span></div>
+                <div class="menu-item btn-back" data-num="<<" id="btn-back-c6"><span>Quay lại</span></div>
+            </div>
         </div>
     </div>
 
     <script>
-        const mainMenu = document.getElementById('main-menu');const aboutSubmenu = document.getElementById('about-submenu');const projectsSubmenu = document.getElementById('projects-submenu');const summarySubmenu = document.getElementById('summary-submenu');const btnAboutMe = document.getElementById('btn-about-me');const btnProjects = document.getElementById('btn-projects');const btnSummary = document.getElementById('btn-summary');const btnExtra = document.getElementById('btn-extra');const btnIntroduction = document.getElementById('btn-introduction');const btnTarget = document.getElementById('btn-target');const btnMore = document.getElementById('btn-more');const btnThinking = document.getElementById('btn-thinking');const btnKnowledge = document.getElementById('btn-knowledge');const btnChallenges = document.getElementById('btn-challenges');const btnBackAbout = document.getElementById('btn-back-about');const btnBackProjects = document.getElementById('btn-back-projects');const btnBackSummary = document.getElementById('btn-back-summary');const footerHint = document.getElementById('btn-footer-esc');const mainTitle = document.getElementById('main-portfolio-title');const introContainer = document.getElementById('intro-container');const targetContainer = document.getElementById('target-container');const moreContainer = document.getElementById('more-container');const extraContainer = document.getElementById('extra-container');const projectContainer = document.getElementById('project-container');const projectViewer = document.getElementById('project-viewer');const thinkingContainer = document.getElementById('thinking-container');const knowledgeContainer = document.getElementById('knowledge-container');const challengesContainer = document.getElementById('challenges-container');function closeAllContentBoxes(){introContainer.classList.add('hidden');targetContainer.classList.add('hidden');moreContainer.classList.add('hidden');thinkingContainer.classList.add('hidden');knowledgeContainer.classList.add('hidden');challengesContainer.classList.add('hidden');extraContainer.classList.add('hidden');projectContainer.classList.add('hidden');projectViewer.src="";mainTitle.classList.remove('hidden');}function backToMainMenu(){closeAllContentBoxes();if(!aboutSubmenu.classList.contains('hidden')){aboutSubmenu.classList.add('hidden');setTimeout(()=>mainMenu.classList.remove('hidden'),200);footerHint.classList.remove('visible');}else if(!projectsSubmenu.classList.contains('hidden')){projectsSubmenu.classList.add('hidden');setTimeout(()=>mainMenu.classList.remove('hidden'),200);footerHint.classList.remove('visible');}else if(!summarySubmenu.classList.contains('hidden')){summarySubmenu.classList.add('hidden');setTimeout(()=>mainMenu.classList.remove('hidden'),200);footerHint.classList.remove('visible');}}btnAboutMe.addEventListener('click',()=>{closeAllContentBoxes();mainMenu.classList.add('hidden');setTimeout(()=>{aboutSubmenu.classList.remove('hidden');footerHint.classList.add('visible');},200);});btnProjects.addEventListener('click',()=>{closeAllContentBoxes();mainMenu.classList.add('hidden');setTimeout(()=>{projectsSubmenu.classList.remove('hidden');footerHint.classList.add('visible');},200);});btnSummary.addEventListener('click',()=>{closeAllContentBoxes();mainMenu.classList.add('hidden');setTimeout(()=>{summarySubmenu.classList.remove('hidden');footerHint.classList.add('visible');},200);});btnExtra.addEventListener('click',()=>{const isHidden=extraContainer.classList.contains('hidden');closeAllContentBoxes();if(isHidden){mainTitle.classList.add('hidden');extraContainer.classList.remove('hidden');}});btnIntroduction.addEventListener('click',()=>{const isHidden=introContainer.classList.contains('hidden');closeAllContentBoxes();if(isHidden)introContainer.classList.remove('hidden');});btnTarget.addEventListener('click',()=>{const isHidden=targetContainer.classList.contains('hidden');closeAllContentBoxes();if(isHidden)targetContainer.classList.remove('hidden');});btnMore.addEventListener('click',()=>{const isHidden=moreContainer.classList.contains('hidden');closeAllContentBoxes();if(isHidden)moreContainer.classList.remove('hidden');});btnThinking.addEventListener('click',()=>{const isHidden=thinkingContainer.classList.contains('hidden');closeAllContentBoxes();if(isHidden)thinkingContainer.classList.remove('hidden');});btnKnowledge.addEventListener('click',()=>{const isHidden=knowledgeContainer.classList.contains('hidden');closeAllContentBoxes();if(isHidden)knowledgeContainer.classList.remove('hidden');});btnChallenges.addEventListener('click',()=>{const isHidden=challengesContainer.classList.contains('hidden');closeAllContentBoxes();if(isHidden)challengesContainer.classList.remove('hidden');});btnBackAbout.addEventListener('click',backToMainMenu);btnBackProjects.addEventListener('click',backToMainMenu);btnBackSummary.addEventListener('click',backToMainMenu);footerHint.addEventListener('click',backToMainMenu);window.addEventListener('keydown',(event)=>{if(event.key==='Escape'||event.key==='Esc'){backToMainMenu();}});document.querySelectorAll('.menu-item').forEach(item=>{const itemId=item.id;const fileName=item.getAttribute('data-file');const specializedIds=['btn-about-me','btn-projects','btn-summary','btn-extra','btn-introduction','btn-target','btn-more','btn-thinking','btn-knowledge','btn-challenges','btn-back-about','btn-back-projects','btn-back-summary'];if(!specializedIds.includes(itemId)){item.addEventListener('click',()=>{if(fileName){const targetSrc=`./projects/${fileName}`;if(!projectContainer.classList.contains('hidden')&&projectViewer.src.includes(fileName)){projectContainer.classList.add('hidden');projectViewer.src="";mainTitle.classList.remove('hidden');}else{closeAllContentBoxes();projectViewer.src=targetSrc;projectContainer.classList.remove('hidden');mainTitle.classList.add('hidden');}}});}});const dragHandle=document.getElementById('drag-handle');let isDragging=false;let offsetX=0;let offsetY=0;dragHandle.addEventListener('mousedown',(e)=>{isDragging=true;projectViewer.style.pointerEvents='none';const rect=projectContainer.getBoundingClientRect();offsetX=e.clientX-rect.left;offsetY=e.clientY-rect.top;});document.addEventListener('mousemove',(e)=>{if(!isDragging)return;const newX=e.clientX-offsetX;const newY=e.clientY-offsetY;projectContainer.style.left=`${newX}px`;projectContainer.style.top=`${newY}px`;});document.addEventListener('mouseup',()=>{if(isDragging){isDragging=false;projectViewer.style.pointerEvents='auto';}});
+        const mainMenu = document.getElementById('main-menu');
+        const aboutSubmenu = document.getElementById('about-submenu');
+        const projectsSubmenu = document.getElementById('projects-submenu');
+        const summarySubmenu = document.getElementById('summary-submenu');
+
+        const btnAboutMe = document.getElementById('btn-about-me');
+        const btnProjects = document.getElementById('btn-projects');
+        const btnSummary = document.getElementById('btn-summary');
+        const btnExtra = document.getElementById('btn-extra');
+
+        const btnIntroduction = document.getElementById('btn-introduction');
+        const btnTarget = document.getElementById('btn-target');
+        const btnMore = document.getElementById('btn-more');
+        const btnThinking = document.getElementById('btn-thinking');
+        const btnKnowledge = document.getElementById('btn-knowledge');
+        const btnChallenges = document.getElementById('btn-challenges');
+
+        const btnBackAbout = document.getElementById('btn-back-about');
+        const btnBackProjects = document.getElementById('btn-back-projects');
+        const btnBackSummary = document.getElementById('btn-back-summary');
+        const footerHint = document.getElementById('btn-footer-esc');
+        const mainTitle = document.getElementById('main-portfolio-title');
+
+        const introContainer = document.getElementById('intro-container');
+        const targetContainer = document.getElementById('target-container');
+        const moreContainer = document.getElementById('more-container');
+        const extraContainer = document.getElementById('extra-container');
+        const projectContainer = document.getElementById('project-container');
+        const projectViewer = document.getElementById('project-viewer');
+        const thinkingContainer = document.getElementById('thinking-container');
+        const knowledgeContainer = document.getElementById('knowledge-container');
+        const challengesContainer = document.getElementById('challenges-container');
+
+        function closeAllContentBoxes() {
+            const containers = [
+                introContainer, targetContainer, moreContainer, thinkingContainer, 
+                knowledgeContainer, challengesContainer, extraContainer, projectContainer
+            ];
+            containers.forEach(c => c.classList.add('hidden'));
+            
+            for(let i=1; i<=6; i++) {
+                const targetBox = document.getElementById(`c${i}-target-container`);
+                if(targetBox) targetBox.classList.add('hidden');
+            }
+            projectViewer.src = "";
+            mainTitle.classList.remove('hidden');
+        }
+
+        function backToMainMenu() {
+            closeAllContentBoxes();
+            
+            const submenusToHide = [aboutSubmenu, projectsSubmenu, summarySubmenu];
+            for(let i=1; i<=6; i++) {
+                const cSub = document.getElementById(`c${i}-submenu`);
+                if(cSub) submenusToHide.push(cSub);
+            }
+
+            let isAnyOpen = false;
+            submenusToHide.forEach(menu => {
+                if (menu && !menu.classList.contains('hidden')) {
+                    menu.classList.add('hidden');
+                    isAnyOpen = true;
+                }
+            });
+
+            if (isAnyOpen) {
+                setTimeout(() => mainMenu.classList.remove('hidden'), 200);
+                footerHint.classList.remove('visible');
+            }
+        }
+
+        btnAboutMe.addEventListener('click',()=>{
+            closeAllContentBoxes(); mainMenu.classList.add('hidden');
+            setTimeout(()=>{aboutSubmenu.classList.remove('hidden');footerHint.classList.add('visible');},200);
+        });
+
+        btnProjects.addEventListener('click',()=>{
+            closeAllContentBoxes(); mainMenu.classList.add('hidden');
+            setTimeout(()=>{projectsSubmenu.classList.remove('hidden');footerHint.classList.add('visible');},200);
+        });
+
+        btnSummary.addEventListener('click',()=>{
+            closeAllContentBoxes(); mainMenu.classList.add('hidden');
+            setTimeout(()=>{summarySubmenu.classList.remove('hidden');footerHint.classList.add('visible');},200);
+        });
+
+        btnExtra.addEventListener('click',()=>{
+            const isHidden=extraContainer.classList.contains('hidden');
+            closeAllContentBoxes();
+            if(isHidden){ mainTitle.classList.add('hidden'); extraContainer.classList.remove('hidden'); }
+        });
+
+        btnIntroduction.addEventListener('click',()=>{
+            const isHidden=introContainer.classList.contains('hidden');
+            closeAllContentBoxes(); if(isHidden) introContainer.classList.remove('hidden');
+        });
+        btnTarget.addEventListener('click',()=>{
+            const isHidden=targetContainer.classList.contains('hidden');
+            closeAllContentBoxes(); if(isHidden) targetContainer.classList.remove('hidden');
+        });
+        btnMore.addEventListener('click',()=>{
+            const isHidden=moreContainer.classList.contains('hidden');
+            closeAllContentBoxes(); if(isHidden) moreContainer.classList.remove('hidden');
+        });
+        btnThinking.addEventListener('click',()=>{
+            const isHidden=thinkingContainer.classList.contains('hidden');
+            closeAllContentBoxes(); if(isHidden) thinkingContainer.classList.remove('hidden');
+        });
+        btnKnowledge.addEventListener('click',()=>{
+            const isHidden=knowledgeContainer.classList.contains('hidden');
+            closeAllContentBoxes(); if(isHidden) knowledgeContainer.classList.remove('hidden');
+        });
+        btnChallenges.addEventListener('click',()=>{
+            const isHidden=challengesContainer.classList.contains('hidden');
+            closeAllContentBoxes(); if(isHidden) challengesContainer.classList.remove('hidden');
+        });
+
+        btnBackAbout.addEventListener('click', backToMainMenu);
+        btnBackProjects.addEventListener('click', backToMainMenu);
+        btnBackSummary.addEventListener('click', backToMainMenu);
+        footerHint.addEventListener('click', backToMainMenu);
+
+        window.addEventListener('keydown',(event)=>{
+            if(event.key==='Escape'||event.key==='Esc') backToMainMenu();
+        });
+
+        for(let i=1; i<=6; i++) {
+            const btnC = document.getElementById(`btn-c${i}`);
+            const cSubmenu = document.getElementById(`c${i}-submenu`);
+            const btnBackC = document.getElementById(`btn-back-c${i}`);
+            const btnCTarget = document.getElementById(`btn-c${i}-target`);
+            const cTargetContainer = document.getElementById(`c${i}-target-container`);
+
+            if(btnC) {
+                btnC.addEventListener('click', () => {
+                    closeAllContentBoxes();
+                    projectsSubmenu.classList.add('hidden');
+                    setTimeout(() => cSubmenu.classList.remove('hidden'), 200);
+                });
+            }
+            
+            if(btnBackC) {
+                btnBackC.addEventListener('click', () => {
+                    closeAllContentBoxes();
+                    cSubmenu.classList.add('hidden');
+                    setTimeout(() => projectsSubmenu.classList.remove('hidden'), 200);
+                });
+            }
+
+            if(btnCTarget) {
+                btnCTarget.addEventListener('click', () => {
+                    const isHidden = cTargetContainer.classList.contains('hidden');
+                    closeAllContentBoxes();
+                    if(isHidden) cTargetContainer.classList.remove('hidden');
+                });
+            }
+        }
+
+        document.querySelectorAll('.menu-item').forEach(item => {
+            const fileName = item.getAttribute('data-file');
+            if(fileName) {
+                item.addEventListener('click', () => {
+                    const targetSrc = `./projects/${fileName}`;
+                    if(!projectContainer.classList.contains('hidden') && projectViewer.src.includes(fileName)){
+                        projectContainer.classList.add('hidden');
+                        projectViewer.src = "";
+                        mainTitle.classList.remove('hidden');
+                    } else {
+                        closeAllContentBoxes();
+                        projectViewer.src = targetSrc;
+                        projectContainer.classList.remove('hidden');
+                        mainTitle.classList.add('hidden');
+                    }
+                });
+            }
+        });
+
+        const dragHandle=document.getElementById('drag-handle');
+        let isDragging=false; let offsetX=0; let offsetY=0;
+        
+        dragHandle.addEventListener('mousedown',(e)=>{
+            isDragging=true; projectViewer.style.pointerEvents='none';
+            const rect=projectContainer.getBoundingClientRect();
+            offsetX=e.clientX-rect.left; offsetY=e.clientY-rect.top;
+        });
+        document.addEventListener('mousemove',(e)=>{
+            if(!isDragging) return;
+            projectContainer.style.left=`${e.clientX-offsetX}px`;
+            projectContainer.style.top=`${e.clientY-offsetY}px`;
+        });
+        document.addEventListener('mouseup',()=>{
+            if(isDragging){ isDragging=false; projectViewer.style.pointerEvents='auto'; }
+        });
     </script>
 </body>
 </html>
