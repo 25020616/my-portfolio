@@ -10,6 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
 
     <style>
+      /* Chặn bôi đen văn bản để không hiện popup Google Dịch khi click nhanh */
+.menu-item, .footer-hint {
+    -webkit-user-select: none; /* Dành cho Safari */
+    -moz-user-select: none;    /* Dành cho Firefox */
+    -ms-user-select: none;     /* Dành cho IE/Edge bản cũ */
+    user-select: none;         /* Chuẩn chung cho Chrome, Edge, Cốc Cốc... */
+}
         :root {
             --p3-accent: #000000;          
             --p3-menu-bg: rgba(0, 0, 0, 0.7); 
