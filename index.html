@@ -837,21 +837,46 @@
             }
         });
 
-        const dragHandle=document.getElementById('drag-handle');
-        let isDragging=false; let offsetX=0; let offsetY=0;
+        const dragHandle = document.getElementById('drag-handle');
+        const projectBox = document.querySelector('.project-box'); // Lấy phần tử khung project
+        let isDragging = false; 
+        let isResizing = false; // Thêm biến theo dõi trạng thái thu phóng
+        let offsetX = 0; 
+        let offsetY = 0;
         
-        dragHandle.addEventListener('mousedown',(e)=>{
-            isDragging=true; projectViewer.style.pointerEvents='none';
-            const rect=projectContainer.getBoundingClientRect();
-            offsetX=e.clientX-rect.left; offsetY=e.clientY-rect.top;
+        // 1. Xử lý khi di chuyển (Drag)
+        dragHandle.addEventListener('mousedown', (e) => {
+            isDragging = true; 
+            projectViewer.style.pointerEvents = 'none'; 
+            const rect = projectContainer.getBoundingClientRect();
+            offsetX = e.clientX - rect.left; 
+            offsetY = e.clientY - rect.top;
         });
-        document.addEventListener('mousemove',(e)=>{
-            if(!isDragging) return;
-            projectContainer.style.left=`${e.clientX-offsetX}px`;
-            projectContainer.style.top=`${e.clientY-offsetY}px`;
+
+        // 2. Xử lý khi thu phóng (Resize) - FIX LỖI KHỰNG TẠI ĐÂY
+        projectBox.addEventListener('mousedown', (e) => {
+            // Kiểm tra xem chuột có đang click vào góc dưới phải (vùng resize) hay không
+            if (e.offsetX > projectBox.clientWidth - 20 && e.offsetY > projectBox.clientHeight - 20) {
+                isResizing = true;
+                projectViewer.style.pointerEvents = 'none'; // Tạm tắt iframe để chuột lướt qua mượt mà
+            }
         });
-        document.addEventListener('mouseup',()=>{
-            if(isDragging){ isDragging=false; projectViewer.style.pointerEvents='auto'; }
+
+        // 3. Cập nhật vị trí khi kéo thả
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            projectContainer.style.left = `${e.clientX - offsetX}px`;
+            projectContainer.style.top = `${e.clientY - offsetY}px`;
+        });
+
+        // 4. Khôi phục lại trạng thái khi nhả chuột
+        document.addEventListener('mouseup', () => {
+            // Nhả chuột dù đang drag hay resize thì đều bật lại iframe
+            if (isDragging || isResizing) { 
+                isDragging = false; 
+                isResizing = false;
+                projectViewer.style.pointerEvents = 'auto'; 
+            }
         });
     </script>
 </body>
