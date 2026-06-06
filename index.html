@@ -12,7 +12,7 @@
     <style>
         :root {
             --p3-accent: #000000;          
-            --p3-menu-bg: rgba(0, 0, 0, 0.75); /* Giảm nhẹ alpha để lộ hiệu ứng kính mờ */
+            --p3-menu-bg: rgba(0, 0, 0, 0.7); 
             --p3-text-light: #ffffff;      
             --p3-white: #ffffff;
         }
@@ -34,6 +34,66 @@
             color: var(--p3-accent);
             overflow-x: hidden;
             height: 100vh;
+        }
+
+        /* --- MÀN HÌNH CHỜ (PRELOADER) --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #050505;
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .loader-text {
+            color: #ffffff;
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            animation: pulse-loader 1.5s infinite ease-in-out;
+        }
+
+        .loader-line {
+            width: 150px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-line::after {
+            content: '';
+            position: absolute;
+            left: -50px;
+            top: 0;
+            height: 100%;
+            width: 50px;
+            background: #ffffff;
+            animation: slide-line 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse-loader {
+            0%, 100% { opacity: 1; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+            50% { opacity: 0.3; text-shadow: none; }
+        }
+
+        @keyframes slide-line {
+            0% { left: -50px; }
+            100% { left: 150px; }
+        }
+
+        /* Khi load xong, JS sẽ add class 'loaded' vào body để ẩn preloader */
+        body.loaded #preloader {
+            opacity: 0;
+            visibility: hidden;
         }
 
         .video-bg {
@@ -141,24 +201,27 @@
             flex-direction: column;
             align-items: flex-end; 
             z-index: 2; 
+            perspective: 1200px; /* Bật chế độ góc nhìn 3D cho toàn bộ khu vực bên phải */
         }
 
         .menu-wrapper {
             width: 100%;
+            transform-style: preserve-3d;
         }
 
         .menu-container {
             display: flex;
             flex-direction: column;
             gap: 18px; 
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
             opacity: 1;
-            transform: scale(1);
+            transform: scale(1) translateZ(0);
+            transform-style: preserve-3d;
         }
 
         .menu-container.hidden {
             opacity: 0;
-            transform: scale(0.95) translateX(100px); 
+            transform: scale(0.85) translateX(100px) translateZ(-100px) rotateY(15deg); 
             pointer-events: none;
             position: absolute;
             width: 100%;
@@ -167,19 +230,20 @@
         .menu-item, .footer-hint, .content-box {
             position: relative;
             background: var(--p3-menu-bg);
-            backdrop-filter: blur(8px); /* Tạo hiệu ứng kính mờ siêu sang chảnh */
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 6px; 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 8px; 
             filter: url(#wave-filter);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: -5px 10px 20px rgba(0, 0, 0, 0.4), inset 1px 1px 1px rgba(255, 255, 255, 0.2);
             animation: orbital-wave 6s ease-in-out infinite;
-            transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s, opacity 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d; /* Cho phép các thành phần con lơ lửng */
         }
 
         .menu-item {
             width: 100%;
-            padding: 20px 35px; 
+            padding: 22px 35px; 
             text-align: right;
             cursor: pointer;
         }
@@ -199,19 +263,23 @@
             letter-spacing: 2px;
             color: var(--p3-text-light);
             display: block;
+            transform: translateZ(20px); /* Kéo chữ nổi lên khỏi nền mờ */
+            transition: transform 0.3s ease, color 0.3s;
         }
 
         .menu-item:hover {
             animation-play-state: paused; 
-            background: rgba(255, 255, 255, 0.98);
-            border-color: rgba(0, 0, 0, 0.8);
-            transform: translateX(-12px) scale(1.02) !important;
-            box-shadow: -5px 5px 25px rgba(255, 255, 255, 0.4), 0 10px 20px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(255, 255, 255, 0.8);
+            /* Hiệu ứng nghiêng và bay ra khỏi màn hình (3D Pop-out) */
+            transform: translateZ(40px) translateX(-15px) rotateY(-8deg) rotateX(2deg) !important;
+            box-shadow: -15px 20px 35px rgba(0, 0, 0, 0.6), inset 1px 1px 3px rgba(255, 255, 255, 0.6);
         }
 
         .menu-item:hover span {
             color: #000000;
             text-shadow: none;
+            transform: translateZ(35px); /* Chữ nảy cao hơn khi hover */
         }
 
         .menu-item::before {
@@ -219,18 +287,20 @@
             position: absolute;
             left: 30px;
             top: 50%;
-            transform: translateY(-50%);
+            transform: translateY(-50%) translateZ(10px); /* Số cũng nổi nhẹ */
             font-weight: bold;
             font-size: 0.85rem;
             color: rgba(255, 255, 255, 0.4);
+            transition: color 0.3s, transform 0.3s;
         }
 
         .menu-item:hover::before {
-            color: rgba(0, 0, 0, 0.5);
+            color: rgba(0, 0, 0, 0.6);
+            transform: translateY(-50%) translateZ(25px);
         }
 
         .btn-back {
-            background: rgba(45, 45, 45, 0.9) !important;
+            background: rgba(45, 45, 45, 0.8) !important;
         }
         .btn-back:hover {
             background: rgba(255, 255, 255, 0.98) !important;
@@ -257,12 +327,13 @@
             color: var(--p3-text-light);
             padding: 15px 30px;
             text-transform: uppercase;
-            z-index: 11; /* Đẩy lên cao nhất để mobile bấm phát ăn ngay */
+            z-index: 11; 
             cursor: pointer;
             opacity: 0;
             transform: translateY(20px);
             pointer-events: none; 
             animation-delay: 0.5s;
+            transform-style: preserve-3d;
         }
 
         .footer-hint.visible {
@@ -276,8 +347,8 @@
             background: rgba(255, 255, 255, 0.98);
             color: #000000;
             border-color: rgba(0, 0, 0, 0.8);
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 5px 5px 25px rgba(255, 255, 255, 0.4), 0 10px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-4px) scale(1.05) translateZ(30px);
+            box-shadow: -10px 15px 25px rgba(0, 0, 0, 0.5), inset 1px 1px 2px rgba(255, 255, 255, 0.6);
             text-shadow: none;
         }
 
@@ -285,14 +356,15 @@
             position: absolute;
             left: 30%;                     
             top: 50%;
-            transform: translate(-50%, -50%); 
+            transform: translate(-50%, -50%) scale(1) rotateY(0deg) rotateX(0deg); 
             z-index: 2;
-            transition: opacity 0.4s ease, transform 0.4s ease;
+            transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            perspective: 1500px; /* Thêm góc nhìn cho Box lật 3D */
         }
 
         .content-container.hidden {
             opacity: 0;
-            transform: translate(-50%, -50%) scale(0.95);
+            transform: translate(-50%, -50%) scale(0.8) rotateY(-25deg) rotateX(15deg); /* Box gập vào trong khi ẩn */
             pointer-events: none;
         }
 
@@ -300,22 +372,25 @@
             left: 8vw;
             top: 10vh;
             transform: none !important; 
-            transition: opacity 0.3s ease; 
+            transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
         #project-container.hidden {
             opacity: 0;
+            transform: scale(0.9) rotateY(-10deg) !important;
             pointer-events: none;
         }
 
         .content-box {
             width: 580px;                                  
-            padding: 35px 40px;
+            padding: 40px 45px;
             color: var(--p3-text-light);
             font-size: 1.25rem;            
             font-weight: bold;             
             line-height: 2.2;              
             animation-delay: 0.2s;
+            border-left: 2px solid rgba(255,255,255,0.3);
+            border-top: 1px solid rgba(255,255,255,0.3);
         }
 
         .project-box {
@@ -329,7 +404,7 @@
             overflow: hidden;
             min-width: 400px;
             min-height: 300px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: -10px 15px 40px rgba(0,0,0,0.6), inset 1px 1px 2px rgba(255,255,255,0.2);
         }
 
         .drag-handle {
@@ -359,11 +434,6 @@
             border-radius: 0 0 6px 6px;
         }
 
-        /* ==========================================================================
-           BỘ CODE RESPONSIVE - THÍCH ỨNG MỌI MÀN HÌNH (MỚI THÊM)
-           ========================================================================== */
-        
-        /* Cho màn hình máy tính nhỏ & Laptop (Dưới 1200px) */
         @media (max-width: 1200px) {
             .header-title-text h1 { font-size: 4rem; }
             .right-layout { width: 400px; }
@@ -371,20 +441,15 @@
             .project-box { width: 680px; height: 550px; }
         }
 
-        /* Cho Máy tính bảng & Điện thoại (Dưới 768px) -> Chuyển sang bố cục dọc dọc */
         @media (max-width: 768px) {
-            body { overflow-y: auto; } /* Cho phép cuộn trang nếu menu dài */
-
-            /* Thu nhỏ logo trường, đẩy làm mờ hẳn làm nền để không che chữ */
+            body { overflow-y: auto; } 
             .school-logo {
                 width: 45vh; height: 45vh;
                 left: 50%; top: 45%;
                 transform: translate(-50%, -50%) !important;
                 opacity: 0.12 !important;
-                animation: none; /* Tắt chuyển động để mượt pin điện thoại */
+                animation: none; 
             }
-
-            /* Tiêu đề căn giữa lên trên cùng */
             .header-title-text {
                 top: 3%; right: 0; left: 0;
                 text-align: center;
@@ -398,28 +463,29 @@
                 height: 3px;
                 animation: none;
             }
-
-            /* Menu chính xếp ở giữa màn hình */
             .right-layout {
                 position: relative;
                 top: auto; right: auto; transform: none;
                 width: 90%;
-                margin: 150px auto 100px auto; /* Tạo khoảng trống tránh đè tiêu đề */
+                margin: 150px auto 100px auto; 
                 align-items: center;
+                perspective: 800px;
             }
             .menu-container { gap: 12px; width: 100%; }
             .menu-item { padding: 15px 25px; text-align: center; }
             .menu-item::before { left: 20px; font-size: 0.75rem; }
             .menu-item span { font-size: 1.1rem; }
-            .menu-item:hover { transform: translateY(-3px) scale(1.02) !important; }
+            .menu-item:hover { transform: translateZ(20px) translateY(-5px) rotateX(5deg) !important; }
 
-            /* Khung nội dung text đè full màn hình cực đẹp */
             .content-container {
                 position: fixed;
                 left: 50% !important; top: 50% !important;
-                transform: translate(-50%, -50%) !important;
+                transform: translate(-50%, -50%) scale(1) rotateY(0deg) !important;
                 width: 92vw;
                 z-index: 10;
+            }
+            .content-container.hidden {
+                transform: translate(-50%, -50%) scale(0.8) rotateY(-20deg) !important;
             }
             .content-box {
                 width: 100%;
@@ -427,8 +493,6 @@
                 font-size: 1rem;
                 line-height: 1.8;
             }
-
-            /* Khung xem file PDF tối ưu trên màn hình dọc */
             #project-container {
                 left: 4vw !important; top: 12vh !important;
                 transform: none !important;
@@ -439,7 +503,6 @@
             }
             .drag-handle { font-size: 0.75rem; height: 40px; }
 
-            /* Nút Back cố định ở góc dưới giữa màn hình cho dễ bấm */
             .footer-hint {
                 position: fixed;
                 bottom: 3%; left: 50%;
@@ -454,7 +517,6 @@
             }
         }
 
-        /* Tối ưu riêng cho các điện thoại rất nhỏ (Dưới 400px) */
         @media (max-width: 400px) {
             .header-title-text h1 { font-size: 1.6rem; }
             .menu-item span { font-size: 1rem; }
@@ -463,6 +525,11 @@
     </style>
 </head>
 <body>
+
+    <div id="preloader">
+        <div class="loader-text">SYSTEM BOOTING</div>
+        <div class="loader-line"></div>
+    </div>
 
     <video autoplay loop muted playsinline class="video-bg">
         <source src="images/video.mp4" type="video/mp4">
@@ -578,6 +645,14 @@
     </div>
 
     <script>
+        // SỰ KIỆN ẨN MÀN HÌNH CHỜ SAU KHI LOAD XONG TẤT CẢ TÀI NGUYÊN (ẢNH, VIDEO...)
+        window.addEventListener('load', () => {
+            // Chờ thêm 0.5s cho chắc chắn mượt mà, sau đó thêm class loaded vào body
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+            }, 500);
+        });
+
         const mainMenu = document.getElementById('main-menu');
         const aboutSubmenu = document.getElementById('about-submenu');
         const projectsSubmenu = document.getElementById('projects-submenu');
