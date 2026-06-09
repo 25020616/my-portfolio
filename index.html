@@ -148,7 +148,6 @@
         }
 
         .header-title-text {
-            max-width: 90vw;
             position: absolute;
             top: 6%;
             right: 5%;
@@ -402,7 +401,6 @@
         }
 
         .project-box {
-            animation: viewerIn .45s cubic-bezier(.22,1,.36,1);
             width: 92vw;
             height: 88vh;
             padding: 0 !important;
@@ -473,11 +471,6 @@
             .project-box { width: 680px; height: 550px; }
         }
 
-        @media (max-width: 1024px) {
-            .header-title-text h1 { font-size: 3rem; }
-            .right-layout { width:min(92vw,520px); }
-        }
-
         @media (max-width: 768px) {
             body { overflow-y: auto; } 
             .school-logo {
@@ -488,7 +481,6 @@
                 animation: none; 
             }
             .header-title-text {
-            max-width: 90vw;
                 top: 3%; right: 0; left: 0;
                 text-align: center;
             }
@@ -560,18 +552,60 @@
             .menu-item span { font-size: 1rem; }
             .content-box { font-size: 0.9rem; padding: 15px; }
         }
-    
-        @keyframes viewerIn {
-            from { opacity:0; transform:scale(.85) translateY(30px); }
-            to { opacity:1; transform:scale(1) translateY(0); }
-        }
+    </style>
 
-        @keyframes viewerOut {
-            from { opacity:1; transform:scale(1); }
-            to { opacity:0; transform:scale(.9); }
-        }
-
+<style id="pro-upgrade">
+:root{--glass:rgba(255,255,255,.08);}
+html{scroll-behavior:smooth;}
+body::before{
+content:'';position:fixed;inset:0;pointer-events:none;
+background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.05),transparent 40%);
+}
+.menu-container{animation:fadeSlide .45s ease;}
+@keyframes fadeSlide{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+.content-box{
+animation:cardIn .45s cubic-bezier(.22,1,.36,1);
+backdrop-filter:blur(16px)!important;
+}
+@keyframes cardIn{
+from{opacity:0;transform:translateY(30px) scale(.95)}
+to{opacity:1;transform:none}
+}
+.project-box{
+border-radius:16px;
+overflow:hidden;
+animation:viewerIn .55s cubic-bezier(.22,1,.36,1);
+}
+@keyframes viewerIn{
+from{opacity:0;transform:scale(.85)}
+to{opacity:1;transform:scale(1)}
+}
+.close-floating{
+position:absolute;top:14px;right:18px;z-index:1001;
+width:38px;height:38px;border-radius:50%;
+border:none;cursor:pointer;
+background:rgba(0,0,0,.6);color:#fff;font-size:20px;
+}
+.loading-overlay{
+position:absolute;inset:35px 0 0 0;display:none;
+align-items:center;justify-content:center;
+background:rgba(0,0,0,.55);color:white;font-size:1.2rem;
+z-index:999;
+}
+.menu-item{position:relative}
+.menu-item:hover{transition:.25s!important}
+@media(max-width:1024px){
+.header-title-text{
+left:0;right:0;text-align:center;max-width:100%!important;
+}
+.header-title-text h1{
+white-space:normal!important;
+font-size:clamp(2.2rem,6vw,4.5rem)!important;
+}
+.right-layout{width:min(92vw,520px)!important;}
+}
 </style>
+
 </head>
 <body>
 
@@ -620,7 +654,7 @@
     <div id="c5-target-container" class="content-container hidden"><div class="content-box">Mục tiêu Chương 5:<br>Tận dụng AI tạo sinh trong công việc, tận dụng tối đa sức sáng tạo của AI.</div></div>
     <div id="c6-target-container" class="content-container hidden"><div class="content-box">Mục tiêu Chương 6:<br>Định hình nhận thức sâu sắc về đạo đức công nghệ, quy chế liêm chính học thuật.</div></div>
 
-    <div id="project-container" class="content-container hidden"><div class="content-box project-box"><div class="drag-handle" id="drag-handle">✥ PDF Viewer - Nhấn ESC để đóng ✥</div><iframe id="project-viewer" src=""></iframe></div></div>
+    <div id="project-container" class="content-container hidden"><div class="content-box project-box"><div class="drag-handle" id="drag-handle">✥ PDF Viewer - Nhấn ESC để đóng ✥</div><button class="close-floating" id="close-viewer">×</button><div class="loading-overlay" id="loading-overlay">Loading PDF...</div><iframe id="project-viewer" src=""></iframe></div></div>
 
     <div class="right-layout">
         <div class="menu-wrapper">
@@ -872,7 +906,6 @@
                     } else {
                         closeAllContentBoxes();
                         projectViewer.src = targetSrc;
-                        projectContainer.style.animation='viewerIn .45s cubic-bezier(.22,1,.36,1)';
                         projectContainer.classList.remove('hidden');
                         mainTitle.classList.add('hidden');
                     }
@@ -890,6 +923,33 @@ window.addEventListener('keydown',(event)=>{
         mainTitle.classList.remove('hidden');
     }
 });
+
+const closeBtn=document.getElementById('close-viewer');
+const loadingOverlay=document.getElementById('loading-overlay');
+
+if(closeBtn){
+closeBtn.addEventListener('click',()=>{
+projectContainer.classList.add('hidden');
+projectViewer.src='';
+mainTitle.classList.remove('hidden');
+});
+}
+
+document.querySelectorAll('[data-file]').forEach(el=>{
+el.addEventListener('click',()=>{
+if(loadingOverlay) loadingOverlay.style.display='flex';
+});
+});
+
+projectViewer.addEventListener('load',()=>{
+if(loadingOverlay) loadingOverlay.style.display='none';
+});
+
+function animateMenuSwap(oldMenu,newMenu){
+oldMenu.classList.add('hidden');
+setTimeout(()=>newMenu.classList.remove('hidden'),180);
+}
+
 </script>
 
 </body>
