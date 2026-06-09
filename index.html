@@ -148,6 +148,7 @@
         }
 
         .header-title-text {
+            max-width: 90vw;
             position: absolute;
             top: 6%;
             right: 5%;
@@ -401,6 +402,7 @@
         }
 
         .project-box {
+            animation: viewerIn .45s cubic-bezier(.22,1,.36,1);
             width: 92vw;
             height: 88vh;
             padding: 0 !important;
@@ -471,6 +473,11 @@
             .project-box { width: 680px; height: 550px; }
         }
 
+        @media (max-width: 1024px) {
+            .header-title-text h1 { font-size: 3rem; }
+            .right-layout { width:min(92vw,520px); }
+        }
+
         @media (max-width: 768px) {
             body { overflow-y: auto; } 
             .school-logo {
@@ -481,6 +488,7 @@
                 animation: none; 
             }
             .header-title-text {
+            max-width: 90vw;
                 top: 3%; right: 0; left: 0;
                 text-align: center;
             }
@@ -552,7 +560,18 @@
             .menu-item span { font-size: 1rem; }
             .content-box { font-size: 0.9rem; padding: 15px; }
         }
-    </style>
+    
+        @keyframes viewerIn {
+            from { opacity:0; transform:scale(.85) translateY(30px); }
+            to { opacity:1; transform:scale(1) translateY(0); }
+        }
+
+        @keyframes viewerOut {
+            from { opacity:1; transform:scale(1); }
+            to { opacity:0; transform:scale(.9); }
+        }
+
+</style>
 </head>
 <body>
 
@@ -853,6 +872,7 @@
                     } else {
                         closeAllContentBoxes();
                         projectViewer.src = targetSrc;
+                        projectContainer.style.animation='viewerIn .45s cubic-bezier(.22,1,.36,1)';
                         projectContainer.classList.remove('hidden');
                         mainTitle.classList.add('hidden');
                     }
